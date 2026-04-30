@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小小理财家 · 新初一财商亲子课</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #8FB996;
+    --sage-light: #B5D4BA;
+    --sage-dark: #6A9E72;
+    --honey: #E8B86D;
+    --honey-light: #F2D9A0;
+    --honey-dark: #D4A04A;
+    --cream: #FFFCF5;
+    --cream-warm: #FFF5E6;
+    --ink: #3D3226;
+    --ink-light: #7A6E62;
+    --blush: #F2C4C4;
+    --blush-light: #FADADD;
+    --sky: #A8D8EA;
+    --lavender: #C3B1E1;
+    --peach: #FFDAB9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Noto Serif SC', 'Songti SC', serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Noise Texture ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== Floating Elements Canvas ===== */
+  #float-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ===== Hero Section ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+    background: linear-gradient(170deg, #FFFCF5 0%, #FFF5E6 35%, #F0F7F1 70%, #FFFCF5 100%);
+  }
+
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    animation: breathe 8s ease-in-out infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-bg-circle:nth-child(1) {
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(143,185,150,0.1) 0%, transparent 65%);
+  }
+
+  .hero-bg-circle:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    animation-delay: -3s;
+    background: radial-gradient(circle, rgba(232,184,109,0.08) 0%, transparent 65%);
+  }
+
+  .hero-bg-circle:nth-child(3) {
+    width: 350px;
+    height: 350px;
+    animation-delay: -5s;
+    background: radial-gradient(circle, rgba(242,196,196,0.08) 0%, transparent 65%);
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+  }
+
+  /* Floating clouds & stars */
+  .float-element {
+    position: absolute;
+    opacity: 0.1;
+    animation: floatAcross linear infinite;
+  }
+  .float-element svg { width: 100%; height: 100%; }
+  .fe-1 { top: 6%; left: -12%; width: 180px; animation-duration: 40s; }
+  .fe-2 { top: 18%; right: -18%; width: 140px; animation-duration: 50s; animation-delay: -15s; }
+  .fe-3 { bottom: 25%; left: -8%; width: 160px; animation-duration: 45s; animation-delay: -25s; }
+  .fe-4 { top: 35%; right: -10%; width: 100px; animation-duration: 55s; animation-delay: -8s; }
+
+  @keyframes floatAcross {
+    0% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(25vw) translateY(-10px); }
+    50% { transform: translateX(50vw) translateY(5px); }
+    75% { transform: translateX(75vw) translateY(-8px); }
+    100% { transform: translateX(110vw) translateY(0); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+    border: 1px solid var(--sage-light);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    color: var(--sage-dark);
+    letter-spacing: 0.15em;
+    margin-bottom: 2.5rem;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    animation: fadeSlideUp 1s ease-out 0.2s both;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--sage);
+    border-radius: 50%;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: clamp(2.8rem, 9vw, 5.5rem);
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 0.8rem;
+    animation: fadeSlideUp 1s ease-out 0.4s both;
+  }
+
+  .hero-title .accent {
+    color: var(--sage-dark);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    border-radius: 2px;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  .hero-title .warm {
+    color: var(--honey-dark);
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.2; transform: scaleX(0.7); }
+    50% { opacity: 1; transform: scaleX(1); }
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.95rem, 2.8vw, 1.3rem);
+    color: var(--ink-light);
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    margin-bottom: 2.5rem;
+    animation: fadeSlideUp 1s ease-out 0.6s both;
+  }
+
+  .hero-desc {
+    max-width: 500px;
+    font-size: 0.95rem;
+    line-height: 2.1;
+    color: var(--ink-light);
+    margin: 0 auto 3rem;
+    animation: fadeSlideUp 1s ease-out 0.8s both;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 48px;
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+    color: #fff;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 32px rgba(143, 185, 150, 0.35);
+    animation: fadeSlideUp 1s ease-out 1s both;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .hero-cta:hover::before { left: 100%; }
+  .hero-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 44px rgba(143, 185, 150, 0.5);
+  }
+
+  .hero-cta .arrow { transition: transform 0.3s ease; }
+  .hero-cta:hover .arrow { transform: translateX(4px); }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeSlideUp 1s ease-out 1.3s both;
+  }
+
+  .scroll-hint span {
+    font-size: 0.7rem;
+    color: var(--sage);
+    letter-spacing: 0.2em;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--sage), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; height: 30px; }
+    50% { opacity: 1; height: 50px; }
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Section Common ===== */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 6rem 2rem;
+  }
+
+  .section-container {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: var(--sage-dark);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--sage-light);
+  }
+
+  .section-title {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--ink-light);
+    max-width: 600px;
+  }
+
+  /* ===== Pain Point Section ===== */
+  .pain-points {
+    background: linear-gradient(180deg, var(--cream) 0%, #FFF 100%);
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pain-card {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(143,185,150,0.12);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 0 20px 0 80px;
+    opacity: 0.08;
+    transition: opacity 0.4s ease;
+  }
+
+  .pain-card:nth-child(1)::before { background: var(--blush); }
+  .pain-card:nth-child(2)::before { background: var(--honey-light); }
+  .pain-card:nth-child(3)::before { background: var(--sky); }
+  .pain-card:nth-child(4)::before { background: var(--lavender); }
+
+  .pain-card:hover::before { opacity: 0.15; }
+  .pain-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.05);
+  }
+
+  .pain-emoji {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .pain-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+
+  .pain-card p {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--ink-light);
+  }
+
+  /* ===== About Section ===== */
+  .about {
+    background: #FFF;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-visual .circle-frame {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 1px solid var(--sage-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: gentleRotate 35s linear infinite;
+  }
+
+  @keyframes gentleRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .about-visual .inner-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(143,185,150,0.1) 0%, rgba(232,184,109,0.06) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: gentleRotate 35s linear infinite reverse;
+  }
+
+  .about-visual .kanji {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 3.5rem;
+    color: var(--sage-dark);
+    text-shadow: 0 2px 20px rgba(143,185,150,0.25);
+  }
+
+  .about-visual .orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(143,185,150,0.4);
+  }
+
+  .orbit-dot:nth-child(2) { top: -4px; left: 50%; background: var(--sage); }
+  .orbit-dot:nth-child(3) { bottom: -4px; left: 50%; background: var(--honey); }
+  .orbit-dot:nth-child(4) { top: 50%; left: -4px; background: var(--blush); }
+
+  .about-text h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .about-text p {
+    font-size: 0.92rem;
+    line-height: 2;
+    color: var(--ink-light);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text .highlight {
+    color: var(--sage-dark);
+    font-weight: 500;
+  }
+
+  .about-text .warm {
+    color: var(--honey-dark);
+    font-weight: 500;
+  }
+
+  /* ===== Course Modules ===== */
+  .modules {
+    background: linear-gradient(180deg, #FFF 0%, var(--cream) 100%);
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .module-card {
+    background: #FFF;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    border: 1px solid rgba(143,185,150,0.12);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(143,185,150,0.04) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .module-card:hover::before { opacity: 1; }
+  .module-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(143,185,150,0.12);
+    border-color: rgba(143,185,150,0.25);
+  }
+
+  .module-num {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 2.2rem;
+    color: var(--sage-light);
+    margin-bottom: 0.3rem;
+    line-height: 1;
+  }
+
+  .module-card:hover .module-num { color: var(--sage); }
+
+  .module-emoji {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .module-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+
+  .module-card p {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--ink-light);
+  }
+
+  /* ===== Parent-Child Section ===== */
+  .parent-child {
+    background: var(--cream);
+  }
+
+  .pc-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .pc-person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: transform 0.4s ease;
+  }
+
+  .pc-person:hover { transform: translateY(-5px); }
+
+  .pc-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    position: relative;
+  }
+
+  .pc-avatar.parent-avatar {
+    background: linear-gradient(135deg, rgba(232,184,109,0.15) 0%, rgba(232,184,109,0.05) 100%);
+    border: 1px solid rgba(232,184,109,0.2);
+  }
+
+  .pc-avatar.child-avatar {
+    background: linear-gradient(135deg, rgba(143,185,150,0.15) 0%, rgba(143,185,150,0.05) 100%);
+    border: 1px solid rgba(143,185,150,0.2);
+  }
+
+  .pc-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px dashed rgba(143,185,150,0.2);
+    animation: spinSlow 25s linear infinite;
+  }
+
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .pc-person h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .pc-person span {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  .pc-bridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pc-bridge-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--honey-light), var(--sage-light), var(--honey-light));
+    position: relative;
+  }
+
+  .pc-bridge-heart {
+    font-size: 1.2rem;
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+
+  /* ===== Growth Values ===== */
+  .growth {
+    background: linear-gradient(180deg, var(--cream) 0%, #FFF 100%);
+    text-align: center;
+  }
+
+  .growth .section-label,
+  .growth .section-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .growth-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .growth-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1.8rem;
+    transition: transform 0.4s ease;
+  }
+
+  .growth-item:hover { transform: translateY(-5px); }
+
+  .growth-circle {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    position: relative;
+    font-size: 1.8rem;
+  }
+
+  .growth-circle::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1px dashed var(--sage-light);
+    animation: spinSlow 22s linear infinite;
+  }
+
+  .growth-item h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    color: var(--ink);
+  }
+
+  .growth-item span {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    letter-spacing: 0.05em;
+  }
+
+  .growth-connector {
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--sage-light), var(--sage), var(--sage-light));
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .growth-connector::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border-top: 1px solid var(--sage);
+    border-right: 1px solid var(--sage);
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  /* ===== Quote Section ===== */
+  .quote-section {
+    background: var(--cream);
+    text-align: center;
+    padding: 5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '财';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 18rem;
+    color: rgba(143,185,150,0.04);
+    pointer-events: none;
+  }
+
+  .quote-mark {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 4rem;
+    color: var(--sage-light);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .quote-text {
+    font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+    font-size: clamp(1.15rem, 3.2vw, 1.7rem);
+    line-height: 2;
+    color: var(--ink);
+    max-width: 560px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  .quote-author {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    letter-spacing: 0.15em;
+  }
+
+  /* ===== CTA Section ===== */
+  .cta-section {
+    background: linear-gradient(180deg, #FFF 0%, var(--cream-warm) 100%);
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+  }
+
+  .cta-section .section-title { margin-bottom: 1rem; }
+  .cta-section .section-desc { margin: 0 auto 2.5rem; text-align: center; }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+    color: #fff;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 32px rgba(143,185,150,0.3);
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 44px rgba(143,185,150,0.45);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--sage-dark);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    border: 1px solid var(--sage-light);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(143,185,150,0.06);
+    border-color: var(--sage);
+    transform: translateY(-3px);
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 2;
+  }
+
+  footer .footer-brand {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1.2rem;
+    color: var(--sage-light);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== Scroll Animations ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ===== Sparkle Rain ===== */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    font-size: 1rem;
+    animation: sparkleFall linear forwards;
+    opacity: 0.5;
+  }
+
+  @keyframes sparkleFall {
+    0% { transform: translateY(-20px) rotate(0deg) scale(0.5); opacity: 0; }
+    15% { opacity: 0.6; transform: translateY(10vh) rotate(90deg) scale(1); }
+    85% { opacity: 0.5; }
+    100% { transform: translateY(100vh) rotate(360deg) scale(0.5); opacity: 0; }
+  }
+
+  /* ===== Divider ===== */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sage), transparent);
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .divider::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--sage);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(143,185,150,0.4);
+  }
+
+  /* ===== Ink Wash BG ===== */
+  .ink-wash {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .ink-wash .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.05;
+  }
+
+  .ink-wash .blob-1 {
+    width: 400px; height: 400px;
+    background: var(--sage);
+    top: -100px; right: -100px;
+    animation: blobFloat 18s ease-in-out infinite;
+  }
+
+  .ink-wash .blob-2 {
+    width: 300px; height: 300px;
+    background: var(--honey);
+    bottom: -50px; left: -50px;
+    animation: blobFloat 22s ease-in-out infinite reverse;
+  }
+
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-visual .circle-frame { width: 200px; height: 200px; }
+    .about-visual .inner-circle { width: 160px; height: 160px; }
+    .about-visual .kanji { font-size: 2.5rem; }
+    .modules-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .growth-flow { flex-direction: column; gap: 0; }
+    .growth-connector {
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--sage-light), var(--sage), var(--sage-light));
+    }
+    .growth-connector::after {
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) rotate(135deg);
+    }
+    .pc-visual { flex-direction: column; gap: 1.5rem; }
+    .pc-bridge { flex-direction: row; }
+    .pc-bridge-line { width: 2px; height: 40px; background: linear-gradient(180deg, var(--honey-light), var(--sage-light), var(--honey-light)); }
+    section { padding: 4rem 1.5rem; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Elements Canvas -->
+<canvas id="float-canvas"></canvas>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+
+  <!-- Floating clouds -->
+  <div class="float-element fe-1">
+    <svg viewBox="0 0 200 80" fill="none"><path d="M30 60 Q30 30 60 30 Q60 10 90 10 Q120 10 120 30 Q150 20 160 40 Q180 40 180 60 Z" fill="#8FB996"/></svg>
+  </div>
+  <div class="float-element fe-2">
+    <svg viewBox="0 0 200 80" fill="none"><path d="M30 60 Q30 30 60 30 Q60 10 90 10 Q120 10 120 30 Q150 20 160 40 Q180 40 180 60 Z" fill="#E8B86D"/></svg>
+  </div>
+  <div class="float-element fe-3">
+    <svg viewBox="0 0 200 80" fill="none"><path d="M30 60 Q30 30 60 30 Q60 10 90 10 Q120 10 120 30 Q150 20 160 40 Q180 40 180 60 Z" fill="#F2C4C4"/></svg>
+  </div>
+  <div class="float-element fe-4">
+    <svg viewBox="0 0 120 50" fill="none"><path d="M20 40 Q20 20 40 20 Q40 8 60 8 Q80 8 80 20 Q100 14 105 28 Q115 28 115 40 Z" fill="#A8D8EA"/></svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>新初一 · 亲子共学</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="accent">小小</span>理财家
+    </h1>
+    <p class="hero-subtitle">新初一财商亲子课</p>
+    <p class="hero-desc">
+      升入初中，零花钱变多了<br>
+      孩子真的会「花钱」吗？<br>
+      和孩子一起，开启第一堂财商课
+    </p>
+    <a href="#enroll" class="hero-cta">
+      亲子报名
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>向下滑动</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== PAIN POINTS ===== -->
+<section class="pain-points">
+  <div class="ink-wash">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+  <div class="section-container">
+    <div style="text-align:center;">
+      <div class="section-label reveal">这些场景熟悉吗</div>
+      <h2 class="section-title reveal reveal-delay-1">升入初中后<br>这些「钱的问题」找上门了</h2>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card reveal reveal-delay-1">
+        <span class="pain-emoji">💸</span>
+        <h3>零花钱一到手就花光</h3>
+        <p>没有规划意识，钱到手就冲动消费，月底总是「破产」</p>
+      </div>
+
+      <div class="pain-card reveal reveal-delay-2">
+        <span class="pain-emoji">🎮</span>
+        <h3>游戏充值 / 盲盒停不下来</h3>
+        <p>分不清「需要」和「想要」，被营销套路牵着走</p>
+      </div>
+
+      <div class="pain-card reveal reveal-delay-3">
+        <span class="pain-emoji">🤔</span>
+        <h3>不知道钱从哪来</h3>
+        <p>对家庭收支毫无概念，觉得父母的钱「取之不尽」</p>
+      </div>
+
+      <div class="pain-card reveal reveal-delay-4">
+        <span class="pain-emoji">😤</span>
+        <h3>一谈钱就起冲突</h3>
+        <p>家长说教孩子反感，亲子之间缺少沟通金钱的桥梁</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="about">
+  <div class="section-container">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="circle-frame">
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="inner-circle">
+            <span class="kanji">财商</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="section-label reveal">关于课程</div>
+        <h3 class="reveal reveal-delay-1">不只是教孩子「管钱」<br>更是一段<span class="highlight">亲子共学</span>的温暖时光</h3>
+        <p class="reveal reveal-delay-2">
+          这是一门专为<span class="highlight">新初一家庭</span>设计的财商启蒙课。以互动游戏、情景模拟和亲子任务为载体，让孩子在轻松的氛围中建立正确的金钱观。
+        </p>
+        <p class="reveal reveal-delay-3">
+          家长不再是<span class="warm">「说教者」</span>，而是和孩子一起探索的<span class="warm">「合伙人」</span>。通过共同制定零花钱公约、模拟超市决策、设计储蓄计划，在陪伴中完成财商启蒙。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COURSE MODULES ===== -->
+<section class="modules">
+  <div class="section-container">
+    <div style="text-align:center;">
+      <div class="section-label reveal">课程内容</div>
+      <h2 class="section-title reveal reveal-delay-1">六堂课，循序渐进</h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;">
+        从认识钱到学会规划，每一步都有趣、有料、有收获
+      </p>
+    </div>
+
+    <div class="modules-grid">
+      <div class="module-card reveal reveal-delay-1">
+        <div class="module-num">壹</div>
+        <span class="module-emoji">🌱</span>
+        <h3>钱从哪里来</h3>
+        <p>通过家庭收支大揭秘，让孩子理解劳动创造价值，建立对金钱的基本认知</p>
+      </div>
+
+      <div class="module-card reveal reveal-delay-2">
+        <div class="module-num">贰</div>
+        <span class="module-emoji">🎯</span>
+        <h3>需要 vs 想要</h3>
+        <p>荒岛求生游戏 + 超市模拟决策，学会区分必需品和额外渴望</p>
+      </div>
+
+      <div class="module-card reveal reveal-delay-3">
+        <div class="module-num">叁</div>
+        <span class="module-emoji">📝</span>
+        <h3>零花钱管理术</h3>
+        <p>制定《零花钱使用公约》，按 50-30-20 比例分配，培养预算意识</p>
+      </div>
+
+      <div class="module-card reveal reveal-delay-1">
+        <div class="module-num">肆</div>
+        <span class="module-emoji">🛡️</span>
+        <h3>识破消费陷阱</h3>
+        <p>揭秘锚定效应、损失厌恶等营销套路，学会「消费前三问」冷静法则</p>
+      </div>
+
+      <div class="module-card reveal reveal-delay-2">
+        <div class="module-num">伍</div>
+        <span class="module-emoji">🐷</span>
+        <h3>储蓄与目标</h3>
+        <p>设定梦想储蓄罐，计算实现目标所需时间，体验延迟满足的快乐</p>
+      </div>
+
+      <div class="module-card reveal reveal-delay-3">
+        <div class="module-num">陆</div>
+        <span class="module-emoji">👨‍👩‍👧</span>
+        <h3>亲子财商挑战赛</h3>
+        <p>家庭理财模拟游戏，亲子协作完成预算挑战，颁发「小小理财家」证书</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARENT-CHILD ===== -->
+<section class="parent-child">
+  <div class="section-container">
+    <div style="text-align:center;">
+      <div class="section-label reveal">亲子共学</div>
+      <h2 class="section-title reveal reveal-delay-1">不是单向教学<br>而是<span style="color:var(--honey-dark)">双向成长</span></h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;">
+        家长和孩子各有收获，在互动中建立信任与默契
+      </p>
+    </div>
+
+    <div class="pc-visual">
+      <div class="pc-person reveal reveal-delay-1">
+        <div class="pc-avatar parent-avatar">👩</div>
+        <h4>家长收获</h4>
+        <span>了解孩子的消费心理<br>掌握科学的财商引导方法<br>改善亲子沟通模式</span>
+      </div>
+
+      <div class="pc-bridge reveal reveal-delay-2">
+        <div class="pc-bridge-line"></div>
+        <div class="pc-bridge-heart">💚</div>
+        <div class="pc-bridge-line"></div>
+      </div>
+
+      <div class="pc-person reveal reveal-delay-3">
+        <div class="pc-avatar child-avatar">🧒</div>
+        <h4>孩子收获</h4>
+        <span>建立正确的金钱观<br>学会规划与延迟满足<br>理解劳动与价值的关系</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GROWTH VALUES ===== -->
+<section class="growth">
+  <div class="section-container">
+    <div class="section-label reveal">成长目标</div>
+    <h2 class="section-title reveal reveal-delay-1">五项核心能力</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      不只是理财技能，更是受用一生的思维方式
+    </p>
+
+    <div class="growth-flow">
+      <div class="growth-item reveal reveal-delay-1">
+        <div class="growth-circle">🧠</div>
+        <h4>财商认知</h4>
+        <span>理解金钱的本质</span>
+      </div>
+
+      <div class="growth-connector"></div>
+
+      <div class="growth-item reveal reveal-delay-2">
+        <div class="growth-circle">📊</div>
+        <h4>规划能力</h4>
+        <span>学会预算与分配</span>
+      </div>
+
+      <div class="growth-connector"></div>
+
+      <div class="growth-item reveal reveal-delay-3">
+        <div class="growth-circle">🛑</div>
+        <h4>自控力</h4>
+        <span>延迟满足与冷静决策</span>
+      </div>
+
+      <div class="growth-connector"></div>
+
+      <div class="growth-item reveal reveal-delay-4">
+        <div class="growth-circle">🔍</div>
+        <h4>批判思维</h4>
+        <span>识别营销与消费陷阱</span>
+      </div>
+
+      <div class="growth-connector"></div>
+
+      <div class="growth-item reveal reveal-delay-5">
+        <div class="growth-circle">🤝</div>
+        <h4>责任感</h4>
+        <span>对自己的选择负责</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUOTE ===== -->
+<section class="quote-section">
+  <div class="section-container reveal">
+    <div class="quote-mark">「</div>
+    <p class="quote-text">
+      给孩子零花钱，不如给孩子财商。<br>
+      最好的财商教育，是和孩子一起成长。
+    </p>
+    <div class="divider" style="margin-bottom:1.5rem;"></div>
+    <p class="quote-author">—— 小小理财家 · 亲子财商课</p>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="enroll">
+  <div class="ink-wash">
+    <div class="blob blob-1"></div>
+  </div>
+  <div class="section-container">
+    <div class="section-label reveal">加入我们</div>
+    <h2 class="section-title reveal reveal-delay-1">和孩子一起<br>上好人生第一堂财商课</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      六课时亲子互动课程 · 游戏化教学 · 家庭实操任务<br>
+      适合新初一学生及家长共同参与
+    </p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        亲子报名
+        <span>→</span>
+      </a>
+      <a href="#" class="btn-secondary">
+        了解详情
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-brand">小小理财家</div>
+  <p>新初一财商亲子课 · 让财商成为孩子成长的礼物</p>
+  <p style="margin-top:0.5rem;opacity:0.4;">© 2026 小小理财家财商教育 版权所有</p>
+</footer>
+
+<script>
+// ===== Floating Elements Animation =====
+const canvas = document.getElementById('float-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 20;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+    this.y = Math.random() * canvas.height;
+  }
+
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = -20;
+    this.size = Math.random() * 6 + 3;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = Math.random() * 0.3 - 0.15;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.015;
+    this.opacity = Math.random() * 0.2 + 0.05;
+    this.wobble = Math.random() * Math.PI * 2;
+    this.wobbleSpeed = Math.random() * 0.015 + 0.008;
+    // Soft pastel colors
+    const colors = [
+      [143, 185, 150], // sage
+      [181, 212, 186], // sage light
+      [232, 184, 109], // honey
+      [242, 196, 196], // blush
+      [168, 216, 234], // sky
+      [195, 177, 225], // lavender
+    ];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    // Shape type
+    this.type = Math.random() > 0.5 ? 'leaf' : 'circle';
+  }
+
+  update() {
+    this.y += this.speedY;
+    this.wobble += this.wobbleSpeed;
+    this.x += this.speedX + Math.sin(this.wobble) * 0.25;
+    this.rotation += this.rotationSpeed;
+
+    if (this.y > canvas.height + 20) {
+      this.reset();
+    }
+  }
+
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = `rgb(${this.color[0]}, ${this.color[1]}, ${this.color[2]})`;
+
+    if (this.type === 'leaf') {
+      // Leaf shape
+      ctx.beginPath();
+      ctx.moveTo(0, -this.size);
+      ctx.bezierCurveTo(
+        this.size * 0.7, -this.size * 0.4,
+        this.size * 0.7, this.size * 0.4,
+        0, this.size
+      );
+      ctx.bezierCurveTo(
+        -this.size * 0.7, this.size * 0.4,
+        -this.size * 0.7, -this.size * 0.4,
+        0, -this.size
+      );
+      ctx.fill();
+    } else {
+      // Soft circle
+      ctx.beginPath();
+      ctx.arc(0, 0, this.size * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== Scroll Reveal =====
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => observer.observe(el));
+
+// ===== Sparkle Rain on CTA hover =====
+const ctaSection = document.querySelector('.cta-section');
+let sparkleInterval;
+
+ctaSection.addEventListener('mouseenter', () => {
+  sparkleInterval = setInterval(() => {
+    createSparkle();
+  }, 350);
+});
+
+ctaSection.addEventListener('mouseleave', () => {
+  clearInterval(sparkleInterval);
+});
+
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  const emojis = ['✨', '🌟', '🍀', '💰', '🌱'];
+  sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  sparkle.style.left = Math.random() * 100 + '%';
+  sparkle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+  sparkle.style.fontSize = (Math.random() * 0.6 + 0.8) + 'rem';
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 6500);
+}
+
+// ===== Smooth scroll for anchor links =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
