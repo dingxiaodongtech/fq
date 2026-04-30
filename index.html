@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小小理财家 · 新初一财商亲子课</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7EBF8A;
+    --sage-soft: #A8D5B0;
+    --sage-pale: #D4EDD8;
+    --honey: #F0C060;
+    --honey-soft: #F7DFA0;
+    --honey-pale: #FFF3D6;
+    --blush: #F0A8A8;
+    --blush-soft: #F8C8C8;
+    --blush-pale: #FDE8E8;
+    --sky: #8CC8E8;
+    --sky-soft: #B8DCF0;
+    --sky-pale: #E0F0FA;
+    --lavender: #B8A0D8;
+    --cream: #FFFDF8;
+    --warm-white: #FFF9F0;
+    --ink: #3A3028;
+    --ink-mid: #6B5E52;
+    --ink-soft: #9E9288;
+    --card-shadow: 0 8px 32px rgba(58,48,40,0.06);
+    --card-hover: 0 16px 48px rgba(58,48,40,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Paper Texture ===== */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== Floating Petals Canvas ===== */
+  #petals { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+
+  /* ===== HERO — Full viewport, illustration-driven ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--warm-white) 0%, var(--sage-pale) 40%, var(--honey-pale) 80%, var(--warm-white) 100%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 480px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Main illustration area */
+  .hero-illustration {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 4/3;
+    margin-bottom: 1.5rem;
+    position: relative;
+    animation: floatGentle 6s ease-in-out infinite;
+  }
+
+  @keyframes floatGentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-illustration svg { width: 100%; height: 100%; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 18px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--sage-soft);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    color: var(--sage);
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.8s ease-out 0.2s both;
+  }
+
+  .hero-badge .dot {
+    width: 5px; height: 5px;
+    background: var(--sage);
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+  }
+
+  .hero-title {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: clamp(2.4rem, 8vw, 3.6rem);
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    animation: fadeIn 0.8s ease-out 0.4s both;
+  }
+
+  .hero-title .t1 { color: var(--sage); }
+  .hero-title .t2 { color: var(--ink); }
+  .hero-title .t3 { color: var(--honey); }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.9;
+    margin-bottom: 1.8rem;
+    animation: fadeIn 0.8s ease-out 0.6s both;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--sage), #5DA86A);
+    color: #fff;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(126,191,138,0.35);
+    transition: all 0.35s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out 0.8s both;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 36px rgba(126,191,138,0.5);
+  }
+
+  .hero-cta::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .hero-cta:hover::after { left: 100%; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== PAIN POINTS — Compact with illustration ===== */
+  .pains {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem;
+    background: var(--cream);
+  }
+
+  .pains-inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    color: var(--blush);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+
+  .section-heading {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .pain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pain-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: var(--card-shadow);
+    transition: all 0.35s ease;
+  }
+
+  .pain-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--card-hover);
+  }
+
+  .pain-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .pain-item:nth-child(1) .pain-icon { background: var(--blush-pale); }
+  .pain-item:nth-child(2) .pain-icon { background: var(--honey-pale); }
+  .pain-item:nth-child(3) .pain-icon { background: var(--sky-pale); }
+  .pain-item:nth-child(4) .pain-icon { background: var(--sage-pale); }
+
+  .pain-text h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+
+  .pain-text p {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* ===== COURSE — With scene illustration ===== */
+  .course {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--sage-pale) 50%, var(--cream) 100%);
+  }
+
+  .course-inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .course-scene {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+
+  .course-scene svg { width: 100%; height: auto; display: block; }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .course-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 1px solid rgba(126,191,138,0.12);
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .course-card::after {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+
+  .course-card:nth-child(1)::after { background: var(--sage); }
+  .course-card:nth-child(2)::after { background: var(--honey); }
+  .course-card:nth-child(3)::after { background: var(--sky); }
+  .course-card:nth-child(4)::after { background: var(--blush); }
+  .course-card:nth-child(5)::after { background: var(--lavender); }
+  .course-card:nth-child(6)::after { background: var(--honey); }
+
+  .course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-hover);
+  }
+
+  .cc-num {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1.6rem;
+    color: var(--sage-soft);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .cc-emoji { font-size: 1.3rem; margin-bottom: 0.4rem; display: block; }
+
+  .course-card h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .course-card p {
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ===== PARENT-CHILD — Side by side with illustration ===== */
+  .bonding {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem;
+    background: var(--cream);
+  }
+
+  .bonding-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bonding-scene {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1.5rem;
+  }
+
+  .bonding-scene svg { width: 100%; height: auto; display: block; }
+
+  .bonding-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .bond-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.35s ease;
+  }
+
+  .bond-card:hover { transform: translateY(-4px); box-shadow: var(--card-hover); }
+
+  .bond-card.parent { border-top: 3px solid var(--honey); }
+  .bond-card.child { border-top: 3px solid var(--sage); }
+
+  .bond-avatar {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .bond-card h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .bond-card ul {
+    list-style: none;
+    text-align: left;
+  }
+
+  .bond-card li {
+    font-size: 0.75rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .bond-card li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .bond-card.parent li::before { color: var(--honey); }
+  .bond-card.child li::before { color: var(--sage); }
+
+  /* ===== GROWTH — Compact flow ===== */
+  .growth {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--honey-pale) 50%, var(--cream) 100%);
+  }
+
+  .growth-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .growth-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .growth-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(6px);
+    border-radius: 100px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .growth-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+
+  .gp-emoji { font-size: 1.1rem; }
+
+  .growth-pill span {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+  }
+
+  /* ===== QUOTE — With decorative illustration ===== */
+  .quote {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem;
+    background: var(--cream);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .quote-inner {
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .quote-deco {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto 1.5rem;
+    opacity: 0.6;
+  }
+
+  .quote-deco svg { width: 100%; height: auto; }
+
+  .quote-text {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+    line-height: 2;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .quote-text em {
+    font-style: normal;
+    color: var(--sage);
+  }
+
+  .quote-author {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== CTA ===== */
+  .cta {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 1.5rem 4rem;
+    background: linear-gradient(180deg, var(--cream), var(--sage-pale));
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .cta-illustration {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .cta-illustration svg { width: 100%; height: auto; }
+
+  .cta h2 {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+
+  .cta p {
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--sage), #5DA86A);
+    color: #fff;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(126,191,138,0.35);
+    transition: all 0.35s ease;
+    text-decoration: none;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 36px rgba(126,191,138,0.5);
+  }
+
+  .cta-sub {
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 2;
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  footer .brand {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1rem;
+    color: var(--sage-soft);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ===== Scroll Reveal ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+  .reveal-d4 { transition-delay: 0.32s; }
+  .reveal-d5 { transition-delay: 0.4s; }
+  .reveal-d6 { transition-delay: 0.48s; }
+
+  /* ===== Sparkle on CTA hover ===== */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: sparkleDrop linear forwards;
+  }
+
+  @keyframes sparkleDrop {
+    0% { transform: translateY(-10px) scale(0.5); opacity: 0; }
+    15% { opacity: 0.7; transform: translateY(8vh) scale(1); }
+    85% { opacity: 0.4; }
+    100% { transform: translateY(100vh) scale(0.4); opacity: 0; }
+  }
+
+  /* ===== Responsive ===== */
+  @media (min-width: 768px) {
+    .hero-inner { max-width: 560px; }
+    .hero-illustration { max-width: 420px; }
+    .pains-inner, .course-inner, .bonding-inner, .growth-inner, .cta-inner, .quote-inner { max-width: 560px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="petals"></canvas>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-inner">
+    <!-- Main Scene Illustration: Parent and child at a desk with coins and piggy bank -->
+    <div class="hero-illustration">
+      <svg viewBox="0 0 480 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background soft shapes -->
+        <ellipse cx="240" cy="320" rx="220" ry="40" fill="#D4EDD8" opacity="0.5"/>
+        <ellipse cx="120" cy="60" rx="80" ry="50" fill="#FFF3D6" opacity="0.4"/>
+        <ellipse cx="380" cy="80" rx="60" ry="40" fill="#FDE8E8" opacity="0.3"/>
+        <ellipse cx="400" cy="280" rx="50" ry="35" fill="#E0F0FA" opacity="0.3"/>
+
+        <!-- Desk -->
+        <rect x="100" y="220" width="280" height="12" rx="6" fill="#E8D8C0"/>
+        <rect x="130" y="232" width="8" height="70" rx="4" fill="#D4C4A8"/>
+        <rect x="342" y="232" width="8" height="70" rx="4" fill="#D4C4A8"/>
+
+        <!-- Piggy bank -->
+        <g transform="translate(310, 170)">
+          <ellipse cx="0" cy="20" rx="32" ry="26" fill="#F8C8C8"/>
+          <ellipse cx="0" cy="18" rx="28" ry="22" fill="#FADADD"/>
+          <ellipse cx="-8" cy="8" rx="4" ry="3" fill="#F0A8A8"/>
+          <rect x="-4" y="-8" width="8" height="4" rx="2" fill="#E89898"/>
+          <line x1="18" y1="20" x2="28" y2="20" stroke="#E89898" stroke-width="2" stroke-linecap="round"/>
+          <text x="0" y="28" text-anchor="middle" font-size="10" fill="#E89898" font-family="sans-serif">¥</text>
+        </g>
+
+        <!-- Coins scattered -->
+        <g>
+          <circle cx="290" cy="210" r="8" fill="#F0C060" stroke="#E0A840" stroke-width="1"/>
+          <text x="290" y="214" text-anchor="middle" font-size="9" fill="#D09030" font-family="sans-serif">¥</text>
+          <circle cx="270" cy="215" r="6" fill="#F7DFA0" stroke="#E0C870" stroke-width="1"/>
+          <circle cx="350" cy="205" r="7" fill="#F0C060" stroke="#E0A840" stroke-width="1"/>
+          <text x="350" y="209" text-anchor="middle" font-size="8" fill="#D09030" font-family="sans-serif">¥</text>
+        </g>
+
+        <!-- Child (sitting, facing right) -->
+        <g transform="translate(200, 120)">
+          <!-- Body -->
+          <rect x="-20" y="40" width="40" height="55" rx="12" fill="#A8D5B0"/>
+          <!-- Head -->
+          <circle cx="0" cy="24" r="22" fill="#FDE0C8"/>
+          <!-- Hair -->
+          <path d="M-18 16 Q-20 0 -8 -4 Q0 -8 8 -4 Q20 0 18 16" fill="#5A4030"/>
+          <path d="M-16 14 Q-14 4 -4 0 Q4 -2 12 2 Q18 8 16 14" fill="#6B5040"/>
+          <!-- Eyes -->
+          <circle cx="-7" cy="22" r="2.5" fill="#3A3028"/>
+          <circle cx="7" cy="22" r="2.5" fill="#3A3028"/>
+          <circle cx="-6" cy="21" r="1" fill="#fff"/>
+          <circle cx="8" cy="21" r="1" fill="#fff"/>
+          <!-- Smile -->
+          <path d="M-5 30 Q0 35 5 30" stroke="#D4A090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="-12" cy="28" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.5"/>
+          <ellipse cx="12" cy="28" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.5"/>
+          <!-- Arms -->
+          <path d="M-20 55 Q-30 65 -25 80" stroke="#FDE0C8" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M20 55 Q30 50 35 60" stroke="#FDE0C8" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- Hand pointing at coins -->
+          <circle cx="35" cy="60" r="5" fill="#FDE0C8"/>
+        </g>
+
+        <!-- Parent (sitting, facing left) -->
+        <g transform="translate(150, 105)">
+          <!-- Body -->
+          <rect x="-22" y="48" width="44" height="60" rx="14" fill="#B8DCF0"/>
+          <!-- Head -->
+          <circle cx="0" cy="28" r="24" fill="#FDE0C8"/>
+          <!-- Hair (longer, parent style) -->
+          <path d="M-22 18 Q-24 -2 -10 -8 Q0 -12 10 -8 Q24 -2 22 18" fill="#4A3525"/>
+          <path d="M-22 18 Q-26 30 -24 42" stroke="#4A3525" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M22 18 Q26 30 24 42" stroke="#4A3525" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <!-- Eyes -->
+          <circle cx="-7" cy="26" r="2.5" fill="#3A3028"/>
+          <circle cx="7" cy="26" r="2.5" fill="#3A3028"/>
+          <circle cx="-6" cy="25" r="1" fill="#fff"/>
+          <circle cx="8" cy="25" r="1" fill="#fff"/>
+          <!-- Warm smile -->
+          <path d="M-6 34 Q0 40 6 34" stroke="#D4A090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="-13" cy="32" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.4"/>
+          <ellipse cx="13" cy="32" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.4"/>
+          <!-- Arms -->
+          <path d="M22 60 Q32 55 28 75" stroke="#FDE0C8" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M-22 60 Q-32 68 -20 78" stroke="#FDE0C8" stroke-width="8" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- Notebook on desk -->
+        <g transform="translate(160, 195)">
+          <rect x="0" y="0" width="50" height="35" rx="3" fill="#fff" stroke="#E0D8D0" stroke-width="1" transform="rotate(-5)"/>
+          <line x1="8" y1="8" x2="42" y2="6" stroke="#D4C8B8" stroke-width="1"/>
+          <line x1="8" y1="15" x2="38" y2="13" stroke="#D4C8B8" stroke-width="1"/>
+          <line x1="8" y1="22" x2="30" y2="20" stroke="#D4C8B8" stroke-width="1"/>
+        </g>
+
+        <!-- Pencil -->
+        <g transform="translate(225, 200) rotate(25)">
+          <rect x="0" y="0" width="4" height="30" rx="1" fill="#F0C060"/>
+          <polygon points="0,30 4,30 2,36" fill="#FDE0C8"/>
+          <rect x="0" y="0" width="4" height="4" rx="1" fill="#E8A8A8"/>
+        </g>
+
+        <!-- Floating sparkles -->
+        <g opacity="0.6">
+          <text x="80" y="100" font-size="16" fill="#F0C060">✦</text>
+          <text x="380" y="140" font-size="12" fill="#A8D5B0">✦</text>
+          <text x="60" y="200" font-size="10" fill="#F8C8C8">✦</text>
+          <text x="420" y="180" font-size="14" fill="#B8DCF0">✦</text>
+        </g>
+
+        <!-- Small hearts -->
+        <g opacity="0.4">
+          <text x="170" y="100" font-size="14" fill="#F8C8C8">♥</text>
+          <text x="260" y="110" font-size="10" fill="#F8C8C8">♥</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>新初一 · 亲子共学</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="t1">小小</span><span class="t2">理财家</span>
+    </h1>
+    <p class="hero-sub">
+      升入初中，零花钱变多了<br>
+      和孩子一起，上好人生第一堂财商课
+    </p>
+    <a href="#enroll" class="hero-cta">
+      亲子报名 <span>→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ==================== PAIN POINTS ==================== -->
+<section class="pains">
+  <div class="pains-inner">
+    <div class="section-tag reveal">这些场景熟悉吗</div>
+    <h2 class="section-heading reveal reveal-d1">升入初中后<br>「钱的问题」找上门了</h2>
+    <div class="pain-list">
+      <div class="pain-item reveal reveal-d1">
+        <div class="pain-icon">💸</div>
+        <div class="pain-text">
+          <h4>零花钱一到手就花光</h4>
+          <p>没有规划意识，月底总是「破产」</p>
+        </div>
+      </div>
+      <div class="pain-item reveal reveal-d2">
+        <div class="pain-icon">🎮</div>
+        <div class="pain-text">
+          <h4>游戏充值停不下来</h4>
+          <p>分不清「需要」和「想要」</p>
+        </div>
+      </div>
+      <div class="pain-item reveal reveal-d3">
+        <div class="pain-icon">🤔</div>
+        <div class="pain-text">
+          <h4>不知道钱从哪来</h4>
+          <p>觉得父母的钱「取之不尽」</p>
+        </div>
+      </div>
+      <div class="pain-item reveal reveal-d4">
+        <div class="pain-icon">😤</div>
+        <div class="pain-text">
+          <h4>一谈钱就起冲突</h4>
+          <p>家长说教孩子反感，缺少沟通桥梁</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== COURSE ==================== -->
+<section class="course">
+  <div class="course-inner">
+    <!-- Scene illustration: Classroom / Learning journey -->
+    <div class="course-scene reveal">
+      <svg viewBox="0 0 480 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Soft background -->
+        <rect width="480" height="200" rx="24" fill="#F0F7F1"/>
+        <!-- Path / Road -->
+        <path d="M40 160 Q120 140 200 150 Q280 160 360 130 Q420 110 460 120" stroke="#D4EDD8" stroke-width="40" fill="none" stroke-linecap="round"/>
+        <path d="M40 160 Q120 140 200 150 Q280 160 360 130 Q420 110 460 120" stroke="#A8D5B0" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="8 6"/>
+
+        <!-- Milestone 1 -->
+        <g transform="translate(80, 120)">
+          <circle cx="0" cy="0" r="18" fill="#fff" stroke="#A8D5B0" stroke-width="2"/>
+          <text x="0" y="5" text-anchor="middle" font-size="16">🌱</text>
+          <text x="0" y="30" text-anchor="middle" font-size="9" fill="#6B5E52" font-family="'Noto Serif SC',serif">认识钱</text>
+        </g>
+
+        <!-- Milestone 2 -->
+        <g transform="translate(170, 108)">
+          <circle cx="0" cy="0" r="18" fill="#fff" stroke="#F7DFA0" stroke-width="2"/>
+          <text x="0" y="5" text-anchor="middle" font-size="16">🎯</text>
+          <text x="0" y="30" text-anchor="middle" font-size="9" fill="#6B5E52" font-family="'Noto Serif SC',serif">需要vs想要</text>
+        </g>
+
+        <!-- Milestone 3 -->
+        <g transform="translate(260, 118)">
+          <circle cx="0" cy="0" r="18" fill="#fff" stroke="#B8DCF0" stroke-width="2"/>
+          <text x="0" y="5" text-anchor="middle" font-size="16">📝</text>
+          <text x="0" y="30" text-anchor="middle" font-size="9" fill="#6B5E52" font-family="'Noto Serif SC',serif">零花钱管理</text>
+        </g>
+
+        <!-- Milestone 4 -->
+        <g transform="translate(345, 100)">
+          <circle cx="0" cy="0" r="18" fill="#fff" stroke="#F8C8C8" stroke-width="2"/>
+          <text x="0" y="5" text-anchor="middle" font-size="16">🛡️</text>
+          <text x="0" y="30" text-anchor="middle" font-size="9" fill="#6B5E52" font-family="'Noto Serif SC',serif">消费陷阱</text>
+        </g>
+
+        <!-- Flag at end -->
+        <g transform="translate(430, 90)">
+          <line x1="0" y1="0" x2="0" y2="35" stroke="#A8D5B0" stroke-width="2"/>
+          <rect x="2" y="0" width="24" height="16" rx="3" fill="#7EBF8A"/>
+          <text x="14" y="12" text-anchor="middle" font-size="8" fill="#fff" font-family="sans-serif">🏆</text>
+          <text x="0" y="50" text-anchor="middle" font-size="9" fill="#6B5E52" font-family="'Noto Serif SC',serif">毕业挑战</text>
+        </g>
+
+        <!-- Decorative clouds -->
+        <g opacity="0.3">
+          <ellipse cx="50" cy="40" rx="40" ry="18" fill="#fff"/>
+          <ellipse cx="400" cy="50" rx="35" ry="15" fill="#fff"/>
+          <ellipse cx="240" cy="30" rx="30" ry="12" fill="#fff"/>
+        </g>
+
+        <!-- Small birds -->
+        <g opacity="0.25" stroke="#7EBF8A" stroke-width="1.5" fill="none">
+          <path d="M320 40 Q325 35 330 40 Q335 35 340 40"/>
+          <path d="M350 30 Q354 26 358 30 Q362 26 366 30"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="section-tag reveal" style="color:var(--sage);">课程内容</div>
+    <h2 class="section-heading reveal reveal-d1">六堂课，循序渐进</h2>
+
+    <div class="course-grid">
+      <div class="course-card reveal reveal-d1">
+        <div class="cc-num">壹</div>
+        <span class="cc-emoji">🌱</span>
+        <h4>钱从哪里来</h4>
+        <p>家庭收支大揭秘，理解劳动创造价值</p>
+      </div>
+      <div class="course-card reveal reveal-d2">
+        <div class="cc-num">贰</div>
+        <span class="cc-emoji">🎯</span>
+        <h4>需要 vs 想要</h4>
+        <p>荒岛求生游戏，学会区分必需品</p>
+      </div>
+      <div class="course-card reveal reveal-d3">
+        <div class="cc-num">叁</div>
+        <span class="cc-emoji">📝</span>
+        <h4>零花钱管理术</h4>
+        <p>制定使用公约，50-30-20 分配法</p>
+      </div>
+      <div class="course-card reveal reveal-d4">
+        <div class="cc-num">肆</div>
+        <span class="cc-emoji">🛡️</span>
+        <h4>识破消费陷阱</h4>
+        <p>揭秘营销套路，消费前三问法则</p>
+      </div>
+      <div class="course-card reveal reveal-d5">
+        <div class="cc-num">伍</div>
+        <span class="cc-emoji">🐷</span>
+        <h4>储蓄与目标</h4>
+        <p>梦想储蓄罐，体验延迟满足的快乐</p>
+      </div>
+      <div class="course-card reveal reveal-d6">
+        <div class="cc-num">陆</div>
+        <span class="cc-emoji">👨‍👩‍👧</span>
+        <h4>亲子财商挑战赛</h4>
+        <p>家庭理财模拟，颁发理财家证书</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PARENT-CHILD BONDING ==================== -->
+<section class="bonding">
+  <div class="bonding-inner">
+    <!-- Scene: Parent and child high-fiving -->
+    <div class="bonding-scene reveal">
+      <svg viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" rx="20" fill="#FFF9F0"/>
+
+        <!-- Floor -->
+        <ellipse cx="200" cy="195" rx="160" ry="20" fill="#FFF3D6" opacity="0.5"/>
+
+        <!-- Child (left, jumping) -->
+        <g transform="translate(140, 60)">
+          <!-- Shadow -->
+          <ellipse cx="0" cy="130" rx="25" ry="6" fill="#E8D8C0" opacity="0.3"/>
+          <!-- Body -->
+          <rect x="-16" y="40" width="32" height="48" rx="10" fill="#A8D5B0"/>
+          <!-- Head -->
+          <circle cx="0" cy="24" r="20" fill="#FDE0C8"/>
+          <!-- Hair -->
+          <path d="M-16 14 Q-18 0 -6 -4 Q0 -6 6 -4 Q18 0 16 14" fill="#5A4030"/>
+          <!-- Eyes (happy, closed) -->
+          <path d="M-9 22 Q-7 19 -5 22" stroke="#3A3028" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M5 22 Q7 19 9 22" stroke="#3A3028" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Big smile -->
+          <path d="M-6 28 Q0 34 6 28" stroke="#D4A090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="-11" cy="26" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.5"/>
+          <ellipse cx="11" cy="26" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.5"/>
+          <!-- Right arm up (high five) -->
+          <path d="M16 50 Q28 40 32 30" stroke="#FDE0C8" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <circle cx="32" cy="28" r="5" fill="#FDE0C8"/>
+          <!-- Left arm -->
+          <path d="M-16 55 Q-24 65 -18 75" stroke="#FDE0C8" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <!-- Legs -->
+          <rect x="-12" y="85" width="10" height="30" rx="5" fill="#7EBF8A"/>
+          <rect x="2" y="85" width="10" height="30" rx="5" fill="#7EBF8A"/>
+        </g>
+
+        <!-- Parent (right, kneeling) -->
+        <g transform="translate(260, 75)">
+          <!-- Shadow -->
+          <ellipse cx="0" cy="115" rx="28" ry="6" fill="#E8D8C0" opacity="0.3"/>
+          <!-- Body -->
+          <rect x="-18" y="35" width="36" height="52" rx="12" fill="#B8DCF0"/>
+          <!-- Head -->
+          <circle cx="0" cy="18" r="22" fill="#FDE0C8"/>
+          <!-- Hair -->
+          <path d="M-20 10 Q-22 -6 -8 -12 Q0 -14 8 -12 Q22 -6 20 10" fill="#4A3525"/>
+          <path d="M-20 10 Q-24 22 -22 34" stroke="#4A3525" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M20 10 Q24 22 22 34" stroke="#4A3525" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- Eyes (warm, looking at child) -->
+          <circle cx="-7" cy="16" r="2" fill="#3A3028"/>
+          <circle cx="7" cy="16" r="2" fill="#3A3028"/>
+          <circle cx="-6" cy="15" r="0.8" fill="#fff"/>
+          <circle cx="8" cy="15" r="0.8" fill="#fff"/>
+          <!-- Warm smile -->
+          <path d="M-5 24 Q0 30 5 24" stroke="#D4A090" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <ellipse cx="-12" cy="22" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.4"/>
+          <ellipse cx="12" cy="22" rx="4" ry="2.5" fill="#F8C8C8" opacity="0.4"/>
+          <!-- Left arm up (high five) -->
+          <path d="M-18 45 Q-30 35 -34 25" stroke="#FDE0C8" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <circle cx="-34" cy="23" r="5" fill="#FDE0C8"/>
+          <!-- Right arm -->
+          <path d="M18 50 Q26 58 20 68" stroke="#FDE0C8" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <!-- Legs (kneeling) -->
+          <rect x="-14" y="84" width="10" height="25" rx="5" fill="#8CC8E8"/>
+          <rect x="4" y="84" width="10" height="25" rx="5" fill="#8CC8E8"/>
+        </g>
+
+        <!-- High five sparkles -->
+        <g transform="translate(200, 82)">
+          <text x="-8" y="-8" font-size="14" fill="#F0C060" opacity="0.8">✦</text>
+          <text x="5" y="5" font-size="10" fill="#F8C8C8" opacity="0.7">✦</text>
+          <text x="-3" y="8" font-size="12" fill="#A8D5B0" opacity="0.6">✦</text>
+        </g>
+
+        <!-- Hearts floating -->
+        <text x="170" y="45" font-size="12" fill="#F8C8C8" opacity="0.5">♥</text>
+        <text x="230" y="55" font-size="10" fill="#F8C8C8" opacity="0.4">♥</text>
+        <text x="195" y="35" font-size="8" fill="#F8C8C8" opacity="0.3">♥</text>
+      </svg>
+    </div>
+
+    <div class="section-tag reveal" style="color:var(--honey);">亲子共学</div>
+    <h2 class="section-heading reveal reveal-d1" style="text-align:center;">不是单向教学<br>而是<span style="color:var(--honey)">双向成长</span></h2>
+
+    <div class="bonding-cards">
+      <div class="bond-card parent reveal reveal-d2">
+        <span class="bond-avatar">👩</span>
+        <h4>家长收获</h4>
+        <ul>
+          <li>了解孩子的消费心理</li>
+          <li>掌握科学的引导方法</li>
+          <li>改善亲子沟通模式</li>
+        </ul>
+      </div>
+      <div class="bond-card child reveal reveal-d3">
+        <span class="bond-avatar">🧒</span>
+        <h4>孩子收获</h4>
+        <ul>
+          <li>建立正确的金钱观</li>
+          <li>学会规划与延迟满足</li>
+          <li>理解劳动与价值</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== GROWTH ==================== -->
+<section class="growth">
+  <div class="growth-inner">
+    <div class="section-tag reveal" style="color:var(--lavender);">成长目标</div>
+    <h2 class="section-heading reveal reveal-d1">五项核心能力</h2>
+    <p class="reveal reveal-d2" style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.5rem;">不只是理财技能，更是受用一生的思维方式</p>
+
+    <div class="growth-pills">
+      <div class="growth-pill reveal reveal-d1">
+        <span class="gp-emoji">🧠</span>
+        <span>财商认知</span>
+      </div>
+      <div class="growth-pill reveal reveal-d2">
+        <span class="gp-emoji">📊</span>
+        <span>规划能力</span>
+      </div>
+      <div class="growth-pill reveal reveal-d3">
+        <span class="gp-emoji">🛑</span>
+        <span>自控力</span>
+      </div>
+      <div class="growth-pill reveal reveal-d4">
+        <span class="gp-emoji">🔍</span>
+        <span>批判思维</span>
+      </div>
+      <div class="growth-pill reveal reveal-d5">
+        <span class="gp-emoji">🤝</span>
+        <span>责任感</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== QUOTE ==================== -->
+<section class="quote">
+  <div class="quote-inner reveal">
+    <div class="quote-deco">
+      <svg viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Small plant growing from coin -->
+        <g transform="translate(100, 60)">
+          <ellipse cx="0" cy="12" rx="18" ry="6" fill="#FFF3D6"/>
+          <circle cx="0" cy="8" r="10" fill="#F0C060" stroke="#E0A840" stroke-width="1"/>
+          <text x="0" y="12" text-anchor="middle" font-size="10" fill="#D09030" font-family="sans-serif">¥</text>
+          <!-- Sprout -->
+          <line x1="0" y1="-2" x2="0" y2="-20" stroke="#7EBF8A" stroke-width="2" stroke-linecap="round"/>
+          <ellipse cx="-8" cy="-18" rx="7" ry="4" fill="#A8D5B0" transform="rotate(-30 -8 -18)"/>
+          <ellipse cx="8" cy="-24" rx="7" ry="4" fill="#A8D5B0" transform="rotate(30 8 -24)"/>
+          <ellipse cx="0" cy="-28" rx="5" ry="3.5" fill="#7EBF8A"/>
+        </g>
+        <!-- Sparkles -->
+        <text x="50" y="25" font-size="10" fill="#F0C060" opacity="0.5">✦</text>
+        <text x="150" y="30" font-size="8" fill="#A8D5B0" opacity="0.4">✦</text>
+        <text x="70" y="50" font-size="6" fill="#F8C8C8" opacity="0.4">✦</text>
+      </svg>
+    </div>
+    <p class="quote-text">
+      给孩子零花钱，<br>不如给孩子<em>财商</em>。<br>
+      最好的财商教育，<br>是和孩子一起成长。
+    </p>
+    <p class="quote-author">—— 小小理财家 · 亲子财商课</p>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta" id="enroll">
+  <div class="cta-inner">
+    <div class="cta-illustration reveal">
+      <svg viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circle -->
+        <circle cx="140" cy="90" r="80" fill="#D4EDD8" opacity="0.4"/>
+        <circle cx="140" cy="90" r="60" fill="#A8D5B0" opacity="0.2"/>
+
+        <!-- Central piggy bank (bigger, cuter) -->
+        <g transform="translate(140, 95)">
+          <ellipse cx="0" cy="10" rx="40" ry="32" fill="#F8C8C8"/>
+          <ellipse cx="0" cy="8" rx="36" ry="28" fill="#FADADD"/>
+          <!-- Ears -->
+          <ellipse cx="-22" cy="-18" rx="10" ry="14" fill="#F8C8C8" transform="rotate(-15 -22 -18)"/>
+          <ellipse cx="-22" cy="-16" rx="6" ry="9" fill="#FADADD" transform="rotate(-15 -22 -16)"/>
+          <ellipse cx="22" cy="-18" rx="10" ry="14" fill="#F8C8C8" transform="rotate(15 22 -18)"/>
+          <ellipse cx="22" cy="-16" rx="6" ry="9" fill="#FADADD" transform="rotate(15 22 -16)"/>
+          <!-- Eyes -->
+          <circle cx="-10" cy="-2" r="3.5" fill="#3A3028"/>
+          <circle cx="10" cy="-2" r="3.5" fill="#3A3028"/>
+          <circle cx="-9" cy="-3" r="1.2" fill="#fff"/>
+          <circle cx="11" cy="-3" r="1.2" fill="#fff"/>
+          <!-- Snout -->
+          <ellipse cx="0" cy="8" rx="10" ry="7" fill="#F0A8A8"/>
+          <circle cx="-4" cy="8" r="2" fill="#E89898"/>
+          <circle cx="4" cy="8" r="2" fill="#E89898"/>
+          <!-- Smile -->
+          <path d="M-8 16 Q0 22 8 16" stroke="#E89898" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Coin slot -->
+          <rect x="-6" y="-18" width="12" height="4" rx="2" fill="#E89898"/>
+          <!-- Coin going in -->
+          <g transform="translate(0, -32)">
+            <circle cx="0" cy="0" r="9" fill="#F0C060" stroke="#E0A840" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" font-size="10" fill="#D09030" font-family="sans-serif">¥</text>
+          </g>
+          <!-- Legs -->
+          <rect x="-20" y="30" width="10" height="12" rx="5" fill="#F0A8A8"/>
+          <rect x="10" y="30" width="10" height="12" rx="5" fill="#F0A8A8"/>
+          <!-- Tail -->
+          <path d="M36 5 Q46 -5 40 -15" stroke="#F0A8A8" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- Floating coins -->
+        <g opacity="0.6">
+          <circle cx="60" cy="50" r="8" fill="#F0C060" stroke="#E0A840" stroke-width="1">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-5;0,0" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="60" y="54" text-anchor="middle" font-size="8" fill="#D09030" font-family="sans-serif">¥</text>
+          <circle cx="220" cy="60" r="7" fill="#F7DFA0" stroke="#E0C870" stroke-width="1">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="50" cy="130" r="6" fill="#F0C060" stroke="#E0A840" stroke-width="1">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="3.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="230" cy="120" r="7" fill="#F0C060" stroke="#E0A840" stroke-width="1">
+            <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="2.8s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Sparkles -->
+        <text x="80" y="30" font-size="12" fill="#F0C060" opacity="0.5">✦</text>
+        <text x="200" y="35" font-size="10" fill="#A8D5B0" opacity="0.4">✦</text>
+        <text x="100" y="155" font-size="8" fill="#F8C8C8" opacity="0.4">✦</text>
+      </svg>
+    </div>
+
+    <h2 class="reveal reveal-d1">和孩子一起<br>上好人生第一堂财商课</h2>
+    <p class="reveal reveal-d2">
+      六课时亲子互动 · 游戏化教学 · 家庭实操任务<br>
+      适合新初一学生及家长共同参与
+    </p>
+    <a href="#" class="cta-btn reveal reveal-d3">
+      亲子报名 <span>→</span>
+    </a>
+    <p class="cta-sub reveal reveal-d4">限额招募中 · 名满即止</p>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="brand">小小理财家</div>
+  <p>新初一财商亲子课 · 让财商成为孩子成长的礼物</p>
+  <p style="margin-top:0.3rem;opacity:0.5;">© 2026 小小理财家财商教育</p>
+</footer>
+
+<script>
+// ===== Soft Petal Particles =====
+const c = document.getElementById('petals');
+const ctx = c.getContext('2d');
+let pts = [];
+
+function resize() { c.width = innerWidth; c.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+class Pt {
+  constructor(init) {
+    this.reset();
+    if (init) this.y = Math.random() * c.height;
+  }
+  reset() {
+    this.x = Math.random() * c.width;
+    this.y = -10;
+    this.s = Math.random() * 5 + 2;
+    this.vy = Math.random() * 0.4 + 0.15;
+    this.vx = Math.random() * 0.2 - 0.1;
+    this.r = Math.random() * Math.PI * 2;
+    this.rv = (Math.random() - 0.5) * 0.01;
+    this.a = Math.random() * 0.15 + 0.03;
+    this.w = Math.random() * Math.PI * 2;
+    this.ws = Math.random() * 0.01 + 0.005;
+    const cols = [[126,191,138],[168,213,176],[240,192,96],[248,200,200],[184,220,240],[184,160,216]];
+    this.c = cols[Math.floor(Math.random() * cols.length)];
+  }
+  update() {
+    this.y += this.vy;
+    this.w += this.ws;
+    this.x += this.vx + Math.sin(this.w) * 0.2;
+    this.r += this.rv;
+    if (this.y > c.height + 10) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.r);
+    ctx.globalAlpha = this.a;
+    ctx.fillStyle = `rgb(${this.c[0]},${this.c[1]},${this.c[2]})`;
+    ctx.beginPath();
+    ctx.moveTo(0, -this.s);
+    ctx.bezierCurveTo(this.s*0.6,-this.s*0.3, this.s*0.6,this.s*0.3, 0,this.s);
+    ctx.bezierCurveTo(-this.s*0.6,this.s*0.3, -this.s*0.6,-this.s*0.3, 0,-this.s);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 15; i++) pts.push(new Pt(true));
+
+(function loop() {
+  ctx.clearRect(0, 0, c.width, c.height);
+  pts.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(loop);
+})();
+
+// ===== Scroll Reveal =====
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ===== Sparkle on CTA hover =====
+const cta = document.querySelector('.cta');
+let si;
+cta.addEventListener('mouseenter', () => { si = setInterval(() => {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  s.textContent = ['✨','🌟','🍀','💰','🌱'][Math.floor(Math.random()*5)];
+  s.style.left = Math.random()*100+'%';
+  s.style.fontSize = (Math.random()*0.5+0.7)+'rem';
+  s.style.animationDuration = (Math.random()*2+3)+'s';
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 5500);
+}, 400); });
+cta.addEventListener('mouseleave', () => clearInterval(si));
+
+// ===== Smooth scroll =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+</script>
+</body>
+</html>
